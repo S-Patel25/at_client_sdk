@@ -220,7 +220,9 @@ class NotificationServiceImpl
     try {
       // If network is unavailable, throw AtConnectException
       if (!(await _networkConnectivityChecker.isNetworkAvailable())) {
-        throw AtConnectException('No network availability');
+        throw AtConnectException(
+            'No network availability', intent: Intent.notifyData,
+            exceptionScenario: ExceptionScenario.noNetworkConnectivity);
       }
       // If sharedBy atSign is null, default to current atSign.
       if (notificationParams.atKey.sharedBy.isNull) {
