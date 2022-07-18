@@ -83,6 +83,12 @@ class NotificationRequestTransformer
   }
 
   Future<String> _encryptNotificationValue(AtKey atKey, String value) async {
-    return await atKeyEncryption.encrypt(atKey, value);
+    try {
+      return await atKeyEncryption.encrypt(atKey, value);
+    } on AtException catch (e) {
+      e.stack(AtChainedException(Intent.notifyData,
+          ExceptionScenario.encryptionFailed, 'Failed to encrypt the data'));
+      rethrow;
+    }
   }
 }
